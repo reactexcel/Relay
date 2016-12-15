@@ -23,7 +23,7 @@ const hidingSpots = [];
     }
 })();
 
-let turnsRemaining = 3;
+let turnsRemaining = 4;
 
 export function checkHidingSpotForTreasure(id) {
     if (hidingSpots.some(hs => hs.hasTreasure && hs.hasBeenChecked)) {

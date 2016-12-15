@@ -1,0 +1,86 @@
+input CheckHidingSpotForTreasureInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type CheckHidingSpotForTreasurePayload {
+  hidingSpot: HidingSpot
+  game: Game
+  clientMutationId: String
+}
+
+# A treasure search game
+type Game implements Node {
+  # The ID of an object
+  id: ID!
+
+  # Places where treasure might be hidden
+  hidingSpots(after: String, first: Int, before: String, last: Int): HidingSpotConnection
+
+  # The number of turns a player has left to find the treasure
+  turnsRemaining: Int
+}
+
+# A place where you might find treasure
+type HidingSpot implements Node {
+  # The ID of an object
+  id: ID!
+
+  # True if this spot has already been checked for treasure
+  hasBeenChecked: Boolean
+
+  # True if this hiding spot holds treasure
+  hasTreasure: Boolean
+}
+
+# A connection to a list of items.
+type HidingSpotConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [HidingSpotEdge]
+}
+
+# An edge in a connection.
+type HidingSpotEdge {
+  # The item at the end of the edge
+  node: HidingSpot
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Mutation {
+  checkHidingSpotForTreasure(input: CheckHidingSpotForTreasureInput!): CheckHidingSpotForTreasurePayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+  game: Game
+}
